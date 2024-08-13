@@ -1,0 +1,13 @@
+#root {
+  width: 512px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.Wrapper {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
