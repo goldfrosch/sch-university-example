@@ -2,9 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { TodoItem } from "./components/TodoItem";
 import TodoInput from "./components/TodoInput";
+import React from "react";
+
+interface TodoData {
+  title: string;
+  content: string;
+  isChecked: boolean;
+}
 
 // 잘못된 케이스에 대한 설명
-const TEST_MOCK_DATA1 = [
+const TEST_MOCK_DATA1: TodoData[] = [
   { title: "테스트1", content: "테스트 컨텐츠1", isChecked: false },
   { title: "테스트2", content: "테스트 컨텐츠2", isChecked: false },
   { title: "테스트3", content: "테스트 컨텐츠3", isChecked: false },
@@ -14,7 +21,7 @@ const TEST_MOCK_DATA1 = [
 ];
 
 function App() {
-  const TEST_MOCK_DATA2 = [
+  const TEST_MOCK_DATA2: TodoData[] = [
     { title: "테스트1", content: "테스트 컨텐츠1", isChecked: false },
     { title: "테스트2", content: "테스트 컨텐츠2", isChecked: false },
     { title: "테스트3", content: "테스트 컨텐츠3", isChecked: false },
@@ -23,7 +30,7 @@ function App() {
     { title: "테스트6", content: "테스트 컨텐츠6", isChecked: false },
   ];
 
-  const [testMock, setTestMock] = useState([]);
+  const [testMock, setTestMock] = useState<TodoData[]>([]);
 
   const isMountRef = useRef(false);
 
@@ -49,18 +56,25 @@ function App() {
 
   // 내부에 선언된 배열 값이 변경되어도 실제 화면은 변경되지 않는다.
   const handleWrongClick3 = () => {
-    testMock.push({ title: "테스트지롱", content: "테스트트트" });
+    testMock.push({
+      title: "테스트지롱",
+      content: "테스트트트",
+      isChecked: false,
+    });
     console.log(testMock);
   };
 
   const handleClick = () => {
-    setTestMock([...testMock, { title: "테스트지롱", content: "테스트트트" }]);
+    setTestMock([
+      ...testMock,
+      { title: "테스트지롱", content: "테스트트트", isChecked: false },
+    ]);
     // 화면상 바로 추가되는 모습은 보이지만 밑의 값은 변경되지 않은 수의 배열을 보여준다.
     console.log(testMock);
   };
 
   // 내부 선언된 배열 값이 변경되어도 실제 화면이 변경되지 않는다.
-  const handleWrongRemove = (e) => (index) => {
+  const handleWrongRemove = (e) => (index: number) => {
     e.stopPropagation();
     setTestMock((prev) => {
       prev.splice(index, 1);
@@ -70,11 +84,11 @@ function App() {
     });
   };
 
-  const handleRemove = (index) => {
+  const handleRemove = (index: number) => {
     setTestMock((prev) => prev.filter((_, key) => key !== index));
   };
 
-  const handleToggleCheckbox = (e) => (index) => {
+  const handleToggleCheckbox = (e) => (index: number) => {
     e.stopPropagation();
     setTestMock((prev) => {
       prev[index].isChecked = !prev[index].isChecked;
@@ -82,12 +96,15 @@ function App() {
     });
   };
 
-  const handleAddData = (data) => {
+  const handleAddData = (data: { title: string; content: string }) => {
     setTestMock([...testMock, { ...data, isChecked: false }]);
   };
 
   useEffect(() => {
-    setTestMock(JSON.parse(window.localStorage.getItem("Data")));
+    const NewData: TodoData[] = JSON.parse(
+      window.localStorage.getItem("Data") ?? JSON.stringify([])
+    );
+    setTestMock(NewData);
     isMountRef.current = true;
   }, []);
 
