@@ -1,38 +1,26 @@
-.TodoItemLayout {
+.TodoInputLayout {
   width: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 16px;
 
   padding: 12px;
   border: 2px solid #ababab;
   border-radius: 16px;
-
-  position: relative;
 }
 
-.TodoItemTitle {
+.TodoInputTitle {
   font-size: 20px;
   font-weight: 700;
   color: #049afe;
+  width: 50%;
 }
 
-.TodoItemContent {
+.TodoInputContent {
   font-size: 16px;
   font-weight: 400;
   color: #9b9b9b;
-}
 
-.TodoItemRemoveBtn {
-  width: 32px;
-  height: 32px;
-
-  padding: 4px;
-
-  background-color: #049afe;
-  color: white;
-
-  position: absolute;
-  right: -12px;
-  top: -12px;
+  width: 70%;
 }

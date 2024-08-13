@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { TodoItem } from "./components/TodoItem";
+import TodoInput from "./components/TodoInput";
 
 // 잘못된 케이스에 대한 설명
 const TEST_MOCK_DATA1 = [
@@ -86,6 +87,10 @@ function App() {
     });
   };
 
+  const handleAddData = (data) => {
+    setTestMock([...testMock, { ...data, isChecked: false }]);
+  };
+
   return (
     <div className="Wrapper">
       {testMock.map((data, key) => (
@@ -94,11 +99,12 @@ function App() {
           content={data.content}
           isChecked={data.isChecked}
           key={key}
-          onClick={() => handleClick()}
+          onClick={handleClick}
           onRemove={() => handleRemove(key)}
           onToggle={(e) => handleToggleCheckbox(e)(key)}
         />
       ))}
+      <TodoInput onSubmit={handleAddData} />
     </div>
   );
 }
