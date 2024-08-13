@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { TodoItem } from "./components/TodoItem";
 import TodoInput from "./components/TodoInput";
@@ -23,14 +23,9 @@ function App() {
     { title: "테스트6", content: "테스트 컨텐츠6", isChecked: false },
   ];
 
-  const [testMock, setTestMock] = useState([
-    { title: "테스트1", content: "테스트 컨텐츠1", isChecked: false },
-    { title: "테스트2", content: "테스트 컨텐츠2", isChecked: false },
-    { title: "테스트3", content: "테스트 컨텐츠3", isChecked: false },
-    { title: "테스트4", content: "테스트 컨텐츠4", isChecked: false },
-    { title: "테스트5", content: "테스트 컨텐츠5", isChecked: false },
-    { title: "테스트6", content: "테스트 컨텐츠6", isChecked: false },
-  ]);
+  const [testMock, setTestMock] = useState([]);
+
+  const isMountRef = useRef(false);
 
   // 외부에 선언된 배열 값이 변경되어도 실제 화면은 변경되지 않는다.
   const handleWrongClick1 = () => {
@@ -90,6 +85,18 @@ function App() {
   const handleAddData = (data) => {
     setTestMock([...testMock, { ...data, isChecked: false }]);
   };
+
+  useEffect(() => {
+    setTestMock(JSON.parse(window.localStorage.getItem("Data")));
+    isMountRef.current = true;
+  }, []);
+
+  // 특정 state가 변경될 때 사용하는 것은 매우 위험하기에 잘 사용하지는 않는다.
+  useEffect(() => {
+    if (isMountRef.current) {
+      window.localStorage.setItem("Data", JSON.stringify(testMock));
+    }
+  }, [testMock]);
 
   return (
     <div className="Wrapper">

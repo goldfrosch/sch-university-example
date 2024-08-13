@@ -24,6 +24,8 @@ const TodoInput = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({ title, content });
+    setTitle("");
+    setContent("");
   };
 
   return (
